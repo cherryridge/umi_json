@@ -9,7 +9,7 @@
             "type": "integer",
             "const": 1
         },
-        "pack": {
+        "packs": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
