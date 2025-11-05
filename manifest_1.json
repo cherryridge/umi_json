@@ -3,14 +3,7 @@
     "title": "Schema for pack `manifest.json`",
     "type": "object",
     "additionalProperties": false,
-    "required": [
-        "formatVersion",
-        "nameSpace",
-        "uuid",
-        "minEngineVersion",
-        "version",
-        "entryPoint"
-    ],
+    "required": ["formatVersion", "nameSpace", "uuid", "minEngineVersion", "version", "entryPoint"],
     "properties": {
         "formatVersion": {
             "type": "integer",
@@ -47,20 +40,22 @@
         },
         "authors": {
             "type": "array",
+            "uniqueItems": true,
+            "minItems": 1,
             "items": {
                 "type": "string",
                 "minLength": 1
             },
-            "uniqueItems": true,
-            "minItems": 1,
             "default": []
         },
         "configs": {
             "type": "object",
+            "additionalProperties": false,
             "properties": {
-                "warnOnNSDupe": {
-                    "type": "boolean",
-                    "default": true
+                "namespaceCollision": {
+                    "type": "string",
+                    "enum": ["ignore", "warn", "fail"],
+                    "default": "warn"
                 },
                 "alwaysLoad": {
                     "type": "boolean",
@@ -70,22 +65,25 @@
                     "type": "boolean",
                     "default": false
                 },
-                "allowUnsafeExecution": {
+                "allowDynamicCode": {
                     "type": "boolean",
                     "default": false
                 }
             },
             "default": {
-                "warnOnNSDupe": true,
+                "namespaceCollision": "warn",
                 "alwaysLoad": false,
                 "licenseLibre": false,
-                "allowUnsafeExecution": false
+                "allowDynamicCode": false
             }
         },
         "dependencies": {
             "type": "array",
+            "uniqueItems": true,
+            "minItems": 1,
             "items": {
                 "type": "object",
+                "additionalProperties": false,
                 "required": ["uuid"],
                 "properties": {
                     "uuid": {
@@ -108,8 +106,11 @@
         },
         "knownIncompatibilities": {
             "type": "array",
+            "uniqueItems": true,
+            "minItems": 1,
             "items": {
                 "type": "object",
+                "additionalProperties": false,
                 "required": ["uuid"],
                 "properties": {
                     "uuid": {
@@ -127,6 +128,123 @@
                         "default": 0
                     }
                 }
+            },
+            "default": []
+        },
+        "customOptions": {
+            "type": "array",
+            "uniqueItems": true,
+            "minItems": 1,
+            "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["identifier", "required", "type"],
+                "properties": {
+                    "identifier": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": ["string", "integer", "float", "boolean"]
+                    },
+                    "required": { "type": "boolean" },
+                    "min": {},
+                    "max": {},
+                    "default": {}
+                },
+                "allOf": [
+                    {
+                        "if": {
+                            "required": ["type"],
+                            "properties": { "type": { "const": "integer" }}
+                        },
+                        "then": {
+                            "required": ["min", "max"],
+                            "properties": {
+                                "min": { "type": "integer" },
+                                "max": { "type": "integer" }
+                            }
+                        }
+                    },
+                    {
+                        "if": {
+                            "required": ["type"],
+                            "properties": { "type": { "const": "float" }}
+                        },
+                        "then": {
+                            "required": ["min", "max"],
+                            "properties": {
+                                "min": { "type": "number" },
+                                "max": { "type": "number" }
+                            }
+                        }
+                    },
+                    {
+                        "if": { "not": {
+                            "required": ["type"],
+                            "properties": { "type": { "enum": ["integer", "float"]}}
+                        }},
+                        "then": { "not": { "anyOf": [
+                            {"required": ["min"]},
+                            {"required": ["max"]}
+                        ]}}
+                    },
+                    {
+                        "if": {
+                            "required": ["required"],
+                            "properties": { "required": { "const": false }}
+                        },
+                        "then": { "required": ["default"]}
+                    },
+                    {
+                        "if": {
+                            "required": ["required"],
+                            "properties": { "required": { "const": true }}
+                        },
+                        "then": { "not": { "required": ["default"]}}
+                    },
+                    {
+                        "if": {
+                            "required": ["type", "required"],
+                            "properties": {
+                                "type": { "const": "integer" },
+                                "required": { "const": false }
+                            }
+                        },
+                        "then": { "properties": { "default": { "type": "integer" }}}
+                    },
+                    {
+                        "if": {
+                            "required": ["type", "required"],
+                            "properties": {
+                                "type": { "const": "float" },
+                                "required": { "const": false }
+                            }
+                        },
+                        "then": { "properties": { "default": { "type": "number" }}}
+                    },
+                    {
+                        "if": {
+                            "required": ["type", "required"],
+                            "properties": {
+                                "type": { "const": "string" },
+                                "required": { "const": false }
+                            }
+                        },
+                        "then": { "properties": { "default": { "type": "string" }}}
+                    },
+                    {
+                        "if": {
+                            "required": ["type", "required"],
+                            "properties": {
+                                "type": { "const": "boolean" },
+                                "required": { "const": false }
+                            }
+                        },
+                        "then": { "properties": { "default": { "type": "boolean" }}}
+                    }
+                ]
             },
             "default": []
         }
