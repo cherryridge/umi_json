@@ -3,7 +3,12 @@
     "title": "Schema for `settings.json`, the dynamically changable settings of CherryGrove.",
     "type": "object",
     "additionalProperties": false,
+    "required": ["formatVersion"],
     "properties": {
+        "formatVersion": {
+            "type": "integer",
+            "const": 1
+        },
         "pack": {
             "type": "object",
             "additionalProperties": false,
