@@ -1,0 +1,163 @@
+﻿{
+    "$schema": "https://json-schema.org/draft-07/schema#",
+    "title": "Schema for `settings.json`, the dynamically changable settings of CherryGrove.",
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+        "pack": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "enabledPacks": {
+                    "type": "array",
+                    "uniqueItems": true,
+                    "minItems": 1,
+                    "items": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "default": []
+                },
+                "additionalPackRoots": {
+                    "type": "array",
+                    "uniqueItems": true,
+                    "minItems": 1,
+                    "items": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "default": []
+                },
+                "additionalPacks": {
+                    "type": "array",
+                    "uniqueItems": true,
+                    "minItems": 1,
+                    "items": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "default": []
+                }
+            },
+            "default": {
+                "enabledPacks": [],
+                "additionalPackRoots": [],
+                "additionalPacks": []
+            }
+        },
+        "graphics": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "fov": {
+                    "type": "number",
+                    "minimum": 20,
+                    "maximum": 150,
+                    "default": 70
+                },
+                "gamma": {
+                    "type": "number",
+                    "minimum": 0.1,
+                    "maximum": 5.0,
+                    "default": 1.0
+                },
+                "maxFPS": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 240,
+                    "default": 60
+                },
+                "renderDistance": {
+                    "type": "integer",
+                    "minimum": 2,
+                    "maximum": 1024,
+                    "default": 32
+                },
+                "windowWidth": {
+                    "type": "integer",
+                    "minimum": 640,
+                    "maximum": 7680,
+                    "default": 1920
+                },
+                "windowHeight": {
+                    "type": "integer",
+                    "minimum": 480,
+                    "maximum": 4320,
+                    "default": 1080
+                },
+                "windowMode": {
+                    "type": "string",
+                    "enum": ["windowed", "fullscreen"],
+                    "default": "windowed"
+                },
+                "vsync": {
+                    "type": "boolean",
+                    "default": true
+                }
+            },
+            "default": {
+                "fov": 70,
+                "gamma": 1.0,
+                "maxFPS": 60,
+                "renderDistance": 32,
+                "windowWidth": 1920,
+                "windowHeight": 1080,
+                "windowMode": "windowed",
+                "vsync": true
+            }
+        },
+        "simulation": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "simulationDistance": {
+                    "type": "integer",
+                    "minimum": 2,
+                    "maximum": 128,
+                    "default": 16
+                },
+                "maxPlanckTimePerSec": {
+                    "type": "integer",
+                    "minimum": 2,
+                    "maximum": 2048,
+                    "default": 20
+                }
+            },
+            "default": {
+                "simulationDistance": 16,
+                "maxPlanckTimePerSec": 20
+            }
+        },
+        "debug": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "logging": {
+                    "type": "string",
+                    "enum": ["stdout", "separate", "file"]
+                }
+            },
+            "default": {
+                "logging": "file"
+            }
+        },
+        "misc": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "windowTitle": {
+                    "type": "string",
+                    "default": "CherryGrove"
+                },
+                "checkEngineUpdates": {
+                    "type": "boolean",
+                    "default": true
+                }
+            },
+            "default": {
+                "windowTitle": "CherryGrove",
+                "checkEngineUpdates": true
+            }
+        }
+    }
+}
