@@ -22,6 +22,33 @@
                     },
                     "default": []
                 },
+                "packOptions": {
+                    "type": "array",
+                    "uniqueItems": true,
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": ["uuid", "version", "identifier", "value"],
+                        "properties": {
+                            "uuid": {
+                                "type": "string",
+                                "format": "uuid"
+                            },
+                            "version": {
+                                "type": "integer",
+                                "minimum": 1
+                            },
+                            "identifier": {
+                                "type": "string",
+                                "minLength": 1
+                            },
+                            "value": {
+                                "type": ["string", "number", "integer", "boolean"]
+                            }
+                        }
+                    },
+                    "default": []
+                },
                 "additionalPackRoots": {
                     "type": "array",
                     "uniqueItems": true,
@@ -43,6 +70,7 @@
             },
             "default": {
                 "enabledPacks": [],
+                "packOptions": [],
                 "additionalPackRoots": [],
                 "additionalPacks": []
             }
@@ -65,6 +93,7 @@
                 },
                 "maxFPS": {
                     "type": "integer",
+                    "$comment": "`0` is for unbounded.",
                     "minimum": 0,
                     "maximum": 240,
                     "default": 60
@@ -130,6 +159,105 @@
                 "maxPlanckTimePerSec": 20
             }
         },
+        "input": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "mouseSensitivity": {
+                    "type": "number",
+                    "minimum": 0.1,
+                    "maximum": 10.0,
+                    "default": 1.0
+                },
+                "scrollSensitivity": {
+                    "type": "number",
+                    "minimum": 0.1,
+                    "maximum": 10.0,
+                    "default": 1.0
+                },
+                "invertX": {
+                    "type": "boolean",
+                    "default": false
+                },
+                "invertY": {
+                    "type": "boolean",
+                    "default": false
+                },
+                "comboWindowStart": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 3000,
+                    "default": 80
+                },
+                "comboWindowEnd": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 5000,
+                    "default": 200
+                },
+                "maxComboSize": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 192,
+                    "default": 6
+                },
+                "keybinds": {
+                    "type": "array",
+                    "uniqueItems": true,
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": ["combo", "actions"],
+                        "properties": {
+                            "combo": {
+                                "type": "array",
+                                "additionalItems": false,
+                                "items": [
+                                    { "type": "integer", "minimum": 0, "maximum": 18446744073709551615, "$comment": "InputHandler::BoolInput::KeyCombo::lower" },
+                                    { "type": "integer", "minimum": 0, "maximum": 18446744073709551615, "$comment": "InputHandler::BoolInput::KeyCombo::middle" },
+                                    { "type": "integer", "minimum": 0, "maximum": 18446744073709551615, "$comment": "InputHandler::BoolInput::KeyCombo::higher" }
+                                ]
+                            },
+                            "actions": {
+                                "type": "array",
+                                "uniqueItems": true,
+                                "minItems": 1, "$comment": "Have at least one action, or just delete this combo entry.",
+                                "items": {
+                                    "type": "object",
+                                    "additionalProperties": false,
+                                    "required": ["uuid", "version", "identifier"],
+                                    "properties": {
+                                        "uuid": {
+                                            "type": "string",
+                                            "format": "uuid"
+                                        },
+                                        "version": {
+                                            "type": "integer",
+                                            "minimum": 1
+                                        },
+                                        "identifier": {
+                                            "type": "string",
+                                            "minLength": 1
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "default": []
+                }
+            },
+            "default": {
+                "mouseSensitivity": 1.0,
+                "scrollSensitivity": 1.0,
+                "invertX": false,
+                "invertY": false,
+                "comboWindowStart": 80,
+                "comboWindowEnd": 200,
+                "maxComboSize": 6,
+                "keybinds": []
+            }
+        },
         "debug": {
             "type": "object",
             "additionalProperties": false,
@@ -147,7 +275,7 @@
             "type": "object",
             "additionalProperties": false,
             "properties": {
-                "windowTitle": {
+                "windowTitleBase": {
                     "type": "string",
                     "default": "CherryGrove"
                 },
@@ -157,7 +285,7 @@
                 }
             },
             "default": {
-                "windowTitle": "CherryGrove",
+                "windowTitleBase": "CherryGrove",
                 "checkEngineUpdates": true
             }
         }
