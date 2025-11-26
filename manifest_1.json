@@ -78,58 +78,235 @@
             }
         },
         "dependencies": {
-            "type": "array",
-            "uniqueItems": true,
-            "minItems": 1,
-            "items": {
-                "type": "object",
-                "additionalProperties": false,
-                "required": ["uuid"],
-                "properties": {
-                    "uuid": {
-                        "type": "string",
-                        "format": "uuid"
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "mustBefore": {
+                    "type": "array",
+                    "uniqueItems": true,
+                    "minItems": 1,
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": ["uuid"],
+                        "properties": {
+                            "uuid": {
+                                "type": "string",
+                                "format": "uuid"
+                            },
+                            "minVersion": {
+                                "type": "integer",
+                                "minimum": 1,
+                                "default": 0
+                            },
+                            "maxVersion": {
+                                "type": "integer",
+                                "minimum": 1,
+                                "default": 0
+                            }
+                        }
                     },
-                    "minVersion": {
-                        "type": "integer",
-                        "minimum": 1,
-                        "default": 0
+                    "default": []
+                },
+                "optBefore": {
+                    "type": "array",
+                    "uniqueItems": true,
+                    "minItems": 1,
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": ["uuid"],
+                        "properties": {
+                            "uuid": {
+                                "type": "string",
+                                "format": "uuid"
+                            },
+                            "minVersion": {
+                                "type": "integer",
+                                "minimum": 1,
+                                "default": 0
+                            },
+                            "maxVersion": {
+                                "type": "integer",
+                                "minimum": 1,
+                                "default": 0
+                            }
+                        }
                     },
-                    "maxVersion": {
-                        "type": "integer",
-                        "minimum": 1,
-                        "default": 0
+                    "default": []
+                },
+                "mustAfter": {
+                    "type": "array",
+                    "uniqueItems": true,
+                    "minItems": 1,
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": ["uuid"],
+                        "properties": {
+                            "uuid": {
+                                "type": "string",
+                                "format": "uuid"
+                            },
+                            "minVersion": {
+                                "type": "integer",
+                                "minimum": 1,
+                                "default": 0
+                            },
+                            "maxVersion": {
+                                "type": "integer",
+                                "minimum": 1,
+                                "default": 0
+                            }
+                        }
+                    },
+                    "default": []
+                },
+                "optAfter": {
+                    "type": "array",
+                    "uniqueItems": true,
+                    "minItems": 1,
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": ["uuid"],
+                        "properties": {
+                            "uuid": {
+                                "type": "string",
+                                "format": "uuid"
+                            },
+                            "minVersion": {
+                                "type": "integer",
+                                "minimum": 1,
+                                "default": 0
+                            },
+                            "maxVersion": {
+                                "type": "integer",
+                                "minimum": 1,
+                                "default": 0
+                            }
+                        }
+                    },
+                    "default": []
+                },
+                "mustAnyOrder": {
+                    "type": "array",
+                    "uniqueItems": true,
+                    "minItems": 1,
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": ["uuid"],
+                        "properties": {
+                            "uuid": {
+                                "type": "string",
+                                "format": "uuid"
+                            },
+                            "minVersion": {
+                                "type": "integer",
+                                "minimum": 1,
+                                "default": 0
+                            },
+                            "maxVersion": {
+                                "type": "integer",
+                                "minimum": 1,
+                                "default": 0
+                            }
+                        }
+                    },
+                    "default": []
+                },
+                "optAnyOrder": {
+                    "type": "array",
+                    "uniqueItems": true,
+                    "minItems": 1,
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": ["uuid"],
+                        "properties": {
+                            "uuid": {
+                                "type": "string",
+                                "format": "uuid"
+                            },
+                            "minVersion": {
+                                "type": "integer",
+                                "minimum": 1,
+                                "default": 0
+                            },
+                            "maxVersion": {
+                                "type": "integer",
+                                "minimum": 1,
+                                "default": 0
+                            }
+                        }
+                    },
+                    "default": []
+                },
+                "hardBreakers": {
+                    "type": "array",
+                    "uniqueItems": true,
+                    "minItems": 1,
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": ["uuid"],
+                        "properties": {
+                            "uuid": {
+                                "type": "string",
+                                "format": "uuid"
+                            },
+                            "minVersion": {
+                                "type": "integer",
+                                "minimum": 1,
+                                "default": 0
+                            },
+                            "maxVersion": {
+                                "type": "integer",
+                                "minimum": 1,
+                                "default": 0
+                            }
+                        }
+                    },
+                    "default": []
+                },
+                "softWarnings": {
+                    "type": "array",
+                    "uniqueItems": true,
+                    "minItems": 1,
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": ["uuid"],
+                        "properties": {
+                            "uuid": {
+                                "type": "string",
+                                "format": "uuid"
+                            },
+                            "minVersion": {
+                                "type": "integer",
+                                "minimum": 1,
+                                "default": 0
+                            },
+                            "maxVersion": {
+                                "type": "integer",
+                                "minimum": 1,
+                                "default": 0
+                            }
+                        }
                     }
                 }
             },
-            "default": []
-        },
-        "knownIncompatibilities": {
-            "type": "array",
-            "uniqueItems": true,
-            "minItems": 1,
-            "items": {
-                "type": "object",
-                "additionalProperties": false,
-                "required": ["uuid"],
-                "properties": {
-                    "uuid": {
-                        "type": "string",
-                        "format": "uuid"
-                    },
-                    "minVersion": {
-                        "type": "integer",
-                        "minimum": 1,
-                        "default": 0
-                    },
-                    "maxVersion": {
-                        "type": "integer",
-                        "minimum": 1,
-                        "default": 0
-                    }
-                }
-            },
-            "default": []
+            "default": {
+                "mustBefore": [],
+                "optBefore": [],
+                "mustAfter": [],
+                "optAfter": [],
+                "mustAnyOrder": [],
+                "optAnyOrder": [],
+                "hardBreakers": [],
+                "softWarnings": []
+            }
         },
         "customOptions": {
             "type": "array",
