@@ -2,33 +2,21 @@
     "$schema": "https://json-schema.org/draft-07/schema#",
     "title": "Schema for `settings.json`, the dynamically changable settings of CherryGrove.",
     "type": "object",
-    "additionalProperties": false,
     "required": ["formatVersion"],
     "properties": {
         "formatVersion": {
             "type": "integer",
             "const": 1
         },
-        "packs": {
+        "pack": {
             "type": "object",
-            "additionalProperties": false,
             "properties": {
-                "enabledPacks": {
-                    "type": "array",
-                    "uniqueItems": true,
-                    "items": {
-                        "type": "string",
-                        "format": "uuid"
-                    },
-                    "default": []
-                },
-                "packOptions": {
+                "knownPacks": {
                     "type": "array",
                     "uniqueItems": true,
                     "items": {
                         "type": "object",
-                        "additionalProperties": false,
-                        "required": ["uuid", "version", "identifier", "value"],
+                        "required": ["uuid", "version", "disabled"],
                         "properties": {
                             "uuid": {
                                 "type": "string",
@@ -38,12 +26,34 @@
                                 "type": "integer",
                                 "minimum": 1
                             },
+                            "disabled": {
+                                "type": "boolean"
+                            }
+                        }
+                    },
+                    "default": []
+                },
+                "packOptions": {
+                    "type": "array",
+                    "uniqueItems": true,
+                    "items": {
+                        "type": "object",
+                        "required": ["uuid", "identifier", "type", "value"],
+                        "properties": {
+                            "uuid": {
+                                "type": "string",
+                                "format": "uuid"
+                            },
                             "identifier": {
                                 "type": "string",
                                 "minLength": 1
                             },
+                            "type": {
+                                "type": "string",
+                                "enum": ["string", "integer", "float", "boolean"]
+                            },
                             "value": {
-                                "type": ["string", "number", "integer", "boolean"]
+                                "type": ["string", "integer", "number", "boolean"]
                             }
                         }
                     },
@@ -77,7 +87,6 @@
         },
         "graphics": {
             "type": "object",
-            "additionalProperties": false,
             "properties": {
                 "fov": {
                     "type": "number",
@@ -139,7 +148,6 @@
         },
         "simulation": {
             "type": "object",
-            "additionalProperties": false,
             "properties": {
                 "simulationDistance": {
                     "type": "integer",
@@ -161,7 +169,6 @@
         },
         "input": {
             "type": "object",
-            "additionalProperties": false,
             "properties": {
                 "mouseSensitivity": {
                     "type": "number",
@@ -183,30 +190,17 @@
                     "type": "boolean",
                     "default": false
                 },
-                "comboWindowStart": {
+                "comboMinTTL": {
                     "type": "integer",
-                    "minimum": 1,
-                    "maximum": 3000,
-                    "default": 80
-                },
-                "comboWindowEnd": {
-                    "type": "integer",
-                    "minimum": 1,
-                    "maximum": 5000,
-                    "default": 200
-                },
-                "maxComboSize": {
-                    "type": "integer",
-                    "minimum": 1,
-                    "maximum": 192,
-                    "default": 6
+                    "minimum": 20,
+                    "maximum": 1000,
+                    "default": 100
                 },
                 "keybinds": {
                     "type": "array",
                     "uniqueItems": true,
                     "items": {
                         "type": "object",
-                        "additionalProperties": false,
                         "required": ["combo", "actions"],
                         "properties": {
                             "combo": {
@@ -224,7 +218,6 @@
                                 "minItems": 1, "$comment": "Have at least one action, or just delete this combo entry.",
                                 "items": {
                                     "type": "object",
-                                    "additionalProperties": false,
                                     "required": ["uuid", "version", "identifier"],
                                     "properties": {
                                         "uuid": {
@@ -245,6 +238,89 @@
                         }
                     },
                     "default": []
+                },
+                "mouseMoveBinds": {
+                    "type": "array",
+                    "uniqueItems": true,
+                    "items": {
+                        "type": "object",
+                        "required": ["uuid", "version", "identifier"],
+                        "properties": {
+                            "uuid": {
+                                "type": "string",
+                                "format": "uuid"
+                            },
+                            "version": {
+                                "type": "integer",
+                                "minimum": 1
+                            },
+                            "identifier": {
+                                "type": "string",
+                                "minLength": 1
+                            }
+                        }
+                    },
+                    "default": []
+                },
+                "scrollBinds": {
+                    "type": "array",
+                    "uniqueItems": true,
+                    "items": {
+                        "type": "object",
+                        "required": ["uuid", "version", "identifier"],
+                        "properties": {
+                            "uuid": {
+                                "type": "string",
+                                "format": "uuid"
+                            },
+                            "version": {
+                                "type": "integer",
+                                "minimum": 1
+                            },
+                            "identifier": {
+                                "type": "string",
+                                "minLength": 1
+                            }
+                        }
+                    },
+                    "default": []
+                },
+                "gamepadBinds": {
+                    "type": "array",
+                    "uniqueItems": true,
+                    "items": {
+                        "type": "object",
+                        "required": ["id", "actions"],
+                        "properties": {
+                            "id": {
+                                "type": "integer",
+                                "minimum": 0
+                            },
+                            "actions": {
+                                "type": "array",
+                                "uniqueItems": true,
+                                "minItems": 1, "$comment": "Have at least one action, or just delete this id entry.",
+                                "items": {
+                                    "type": "object",
+                                    "required": ["uuid", "version", "identifier"],
+                                    "properties": {
+                                        "uuid": {
+                                            "type": "string",
+                                            "format": "uuid"
+                                        },
+                                        "version": {
+                                            "type": "integer",
+                                            "minimum": 1
+                                        },
+                                        "identifier": {
+                                            "type": "string",
+                                            "minLength": 1
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             },
             "default": {
@@ -252,15 +328,15 @@
                 "scrollSensitivity": 1.0,
                 "invertX": false,
                 "invertY": false,
-                "comboWindowStart": 80,
-                "comboWindowEnd": 200,
-                "maxComboSize": 6,
-                "keybinds": []
+                "comboMinTTL": 100,
+                "keybinds": [],
+                "mouseMoveBinds": [],
+                "scrollBinds": [],
+                "gamepadBinds": []
             }
         },
         "debug": {
             "type": "object",
-            "additionalProperties": false,
             "properties": {
                 "logging": {
                     "type": "string",
@@ -273,7 +349,6 @@
         },
         "misc": {
             "type": "object",
-            "additionalProperties": false,
             "properties": {
                 "windowTitleBase": {
                     "type": "string",
